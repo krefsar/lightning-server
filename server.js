@@ -1,16 +1,17 @@
 var express = require('express');
 var fs = require('fs');
 var request = require('request');
+var cors = require('cors');
 
 var app = express();
+app.use(cors());
 
-app.get('lightning-status', function (request, response) {
-	fetchStatus();
-	response.json({});
+app.get('/lightning-status', function (request, response) {
+	fetchStatus(response);
 });
 
-function fetchStatus() {
-	var macaroon = fs.readFileSync('/home/bitcoin/data/chain/bitcoin/simnet/admin.macaroon').toString('hex');
+function fetchStatus(res) {
+	var macaroon = fs.readFileSync('/home/pi/admin.macaroon').toString('hex');
 	var options = {
 		url: 'https://localhost:8080/v1/getinfo',
 		rejectUnauthorized: false,
@@ -21,7 +22,7 @@ function fetchStatus() {
 	};
 
 	request.get(options, function(err, response, body) {
-		console.log('body');
+		res.json(body);
 	});
 }
 
