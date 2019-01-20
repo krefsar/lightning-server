@@ -22,7 +22,10 @@ app.post('/initiate-transaction', function(req, res) {
 		headers: {
 			'Grpc-Metadata-macaroon': macaroon,
 		},
-		form: JSON.stringify(req.body),
+		form: JSON.stringify({
+			addr: req.body.addr,
+			amount: req.body.amount,
+		}),
 	};
 	request.post(options, function(err, response, body) {
 		res.json(body);
