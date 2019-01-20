@@ -13,6 +13,23 @@ app.get('/lightning-status', function (request, response) {
 	fetchStatus(response);
 });
 
+app.get('/get-balance', function(req, res) {
+	const macaroon = getMacaroon();
+	var options = {
+		url: 'https://localhost:8080/v1/balance/blockchain',
+		rejectUnauthorized: false,
+		json: true,
+		headers: {
+			'Grpc-Metadata-macaroon': macaroon,
+		},
+	};
+
+	request.get(options, function(err, response, body) {
+		res.json(body);
+	});
+});
+
+
 app.post('/initiate-transaction', function(req, res) {
 	const macaroon = getMacaroon();
 	var options = {
