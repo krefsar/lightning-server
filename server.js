@@ -14,7 +14,7 @@ app.get('/lightning-status', function (request, response) {
 });
 
 app.post('/initiate-transaction', function(req, res) {
-	console.log('got', req.body);
+	const macaroon = getMacaroon();
 	var options = {
 		url: 'https://localhost:8080/v1/transactions',
 		rejectUnauthorized: false,
@@ -23,7 +23,7 @@ app.post('/initiate-transaction', function(req, res) {
 			'Grpc-Metadata-macaroon': macaroon,
 		},
 		form: JSON.stringify({
-			addr: req.body.addr,
+			addr: req.body.address,
 			amount: req.body.amount,
 		}),
 	};
